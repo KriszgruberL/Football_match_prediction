@@ -31,6 +31,9 @@ class PullData :
                         if os.stat("data/csv/B1.csv").st_size < os.stat("data/csv/test.csv").st_size : 
                             os.remove("data/csv/B1.csv")
                             os.rename("data/csv/test.csv", "data/csv/B1.csv")
+                        else : 
+                            os.remove("data/csv/test.csv")
+                            print("There is no new data")
                     print("done!")
                 else:
                     print("Error writing file")
