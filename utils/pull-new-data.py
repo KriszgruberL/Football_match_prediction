@@ -1,3 +1,4 @@
+from datetime import datetime
 from bs4 import BeautifulSoup
 import requests
 import os 
@@ -57,8 +58,22 @@ class PullData :
 
             
     def pull_datas(self, seasons):
+        current_year = datetime.now().year
         for season in seasons:
-            self.pull_one_data(season)
+            start_year = int(season.split('/')[0])
+            
+            if season == f"{current_year}/{current_year + 1}":  # Always scrape the current season
+                print(f"{file_name} is for the current season. Scraping data.")
+                self.pull_one_data(season)  # Scrape for the current season
+            elif start_year <= current_year:
+                file_name = self.transform_season(season) + "_B1.csv"
+                file_path = os.path.join("data/csv/", file_name)
+                
+                if not os.path.exists(file_path):
+                    print(f"{file_name} does not exist. Scraping data for {season}.")
+                    self.pull_one_data(season)  # Your scraping function here
+                else:
+                    print(f"{file_name} exists. Skipping scraping.")
             
 if __name__ == "__main__" : 
     pull = PullData()
