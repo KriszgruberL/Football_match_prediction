@@ -1,26 +1,26 @@
-	1.	Div: League division the match belongs to.
-	2.	Date: Date of the match (format: dd/mm/yy).
-	3.	Time: Time of the match kick-off.
-	4.	HomeTeam: The team playing at home.
-	5.	AwayTeam: The team playing away.
-	6.	FTHG: Full-time goals scored by the home team.
-	7.	FTAG: Full-time goals scored by the away team.
-	8.	FTR: Full-time result (H = Home win, D = Draw, A = Away win).
-	9.	HTHG: Half-time goals scored by the home team.
-	10.	HTAG: Half-time goals scored by the away team.
-	11.	HTR: Half-time result (H = Home win, D = Draw, A = Away win).
-	12.	HS: Home team’s total shots.
-	13.	AS: Away team’s total shots.
-	14.	HST: Home team’s shots on target.
-	15.	AST: Away team’s shots on target.
-	16.	HF: Home team’s fouls committed.
-	17.	AF: Away team’s fouls committed.
-	18.	HC: Home team’s corners won.
-	19.	AC: Away team’s corners won.
-	20.	HY: Home team’s yellow cards received.
-	21.	AY: Away team’s yellow cards received.
-	22.	HR: Home team’s red cards received.
-	23.	AR: Away team’s red cards received.
+	1.	Div: League division the match belongs to. (Delete)
+	2.	Date: Date of the match (format: dd/mm/yy). (Delete)
+	3.	Time: Time of the match kick-off. (Delete)
+	4.	HomeTeam: The team playing at home. (Need)
+	5.	AwayTeam: The team playing away. (Need)
+	6.	FTHG: Full-time goals scored by the home team. (Need)
+	7.	FTAG: Full-time goals scored by the away team. (Need)
+	8.	FTR: Full-time result (H = Home win, D = Draw, A = Away win). (Need)
+	9.	HTHG: Half-time goals scored by the home team. (Need)
+	10.	HTAG: Half-time goals scored by the away team. (Need)
+	11.	HTR: Half-time result (H = Home win, D = Draw, A = Away win). (Need)
+	12.	HS: Home team’s total shots. (Need)
+	13.	AS: Away team’s total shots. (Need)
+	14.	HST: Home team’s shots on target. (Need)
+	15.	AST: Away team’s shots on target. (Need)
+	16.	HF: Home team’s fouls committed. (Need)
+	17.	AF: Away team’s fouls committed.(Need)
+	18.	HC: Home team’s corners won.(Need)
+	19.	AC: Away team’s corners won.(Need)
+	20.	HY: Home team’s yellow cards received.(Need)
+	21.	AY: Away team’s yellow cards received.(Need)
+	22.	HR: Home team’s red cards received.(Need)
+	23.	AR: Away team’s red cards received.(Need)
 	24.	B365H: Bet365 odds for home win.
 	25.	B365D: Bet365 odds for draw.
 	26.	B365A: Bet365 odds for away win.
