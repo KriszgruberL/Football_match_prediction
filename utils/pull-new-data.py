@@ -71,11 +71,17 @@ class PullData :
                 
                 if not os.path.exists(file_path):
                     print(f"{file_name} does not exist. Scraping data for {season}.")
-                    self.pull_one_data(season)  # Your scraping function here
+                    self.pull_one_data(season)
                 else:
                     print(f"{file_name} exists. Skipping scraping.")
             
 if __name__ == "__main__" : 
     pull = PullData()
-    seasons = ["2010/2011", "2011/2012", "2012/2013", "2013/2014", "2014/2015", "2015/2016", "2016/2017", "2017/2018", "2018/2019", "2019/2020", "2020/2021", "2021/2022", "2022/2023", "2023/2024", "2024/2025"]
-    pull.pull_datas(seasons)
+    
+    # First run to get all the data 
+    seasons = ["2019/2020", "2020/2021", "2021/2022", "2022/2023", "2023/2024", "2024/2025"]
+    # pull.pull_datas(seasons)
+    
+    # Second run to get the current season
+    current_season = f"{datetime.now().year}/{datetime.now().year + 1}"
+    pull.pull_one_data(current_season)
