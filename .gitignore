@@ -1,0 +1,3 @@
+airflow-docker/.airflowignore
+.gitignore
+airflow-docker/logs
