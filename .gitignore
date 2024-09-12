@@ -1,3 +1,5 @@
 airflow-docker/.airflowignore
 .gitignore
 airflow-docker/logs
+airflow-docker/.env
+airflow-docker/postgres_data
