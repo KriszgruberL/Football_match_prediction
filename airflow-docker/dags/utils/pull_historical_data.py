@@ -32,7 +32,6 @@ class PullHistoricalData :
 
 
     def pull_one_data(self, season):
-        # csv_dir = "/opt/airflow"
         csv_dir = "/opt/airflow/data/csv"
         response = requests.get(f"{self.url}{self.belgium}", headers=self.headers)
         if response.status_code == 200:
@@ -41,18 +40,14 @@ class PullHistoricalData :
 
             if last_season:
                 csv_url = last_season.find_next("a")["href"]
-                logging.info(f"Found CSV URL: {csv_url}")
                 csv_response = requests.get(f"{self.url}/{csv_url}")
 
                 if csv_response.status_code == 200:
                     if not os.path.exists(csv_dir):
                         os.makedirs(csv_dir)
-                        logging.error("No directory found. Created one.")
+                        
                     csv_path = f"{csv_dir}/{self.transform_season(season)}_B1.csv"
-                    logging.info(f"Saving CSV file to: {csv_path}")
-                    logging.info(f"Pull on data logging of directory : {os.getcwd()}")
                     self.save_csv_if_new(csv_response, csv_path)
-                    logging.info("Done!")
                 else:
                     logging.error("Error fetching CSV file.")
             else:
@@ -69,6 +64,7 @@ class PullHistoricalData :
             if season == f"{current_year}/{current_year + 1}":  # Always scrape the current season
                 logging.info(f"{file_name} is for the current season. Scraping data.")
                 self.pull_one_data(season)  # Scrape for the current season
+                
             elif start_year <= current_year:
                 file_name = self.transform_season(season) + "_B1.csv"
                 file_path = os.path.join("/opt/airflow/data/csv/", file_name)
