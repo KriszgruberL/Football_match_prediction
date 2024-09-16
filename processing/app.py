@@ -27,6 +27,13 @@ clubs = ('Anderlecht', 'Antwerp', 'Beerschot VA', 'Cercle Brugge',
        'Westerlo')
 
 
+clubs_selectBox = ('Select a club...','Anderlecht', 'Antwerp', 'Beerschot VA', 'Cercle Brugge',
+       'Charleroi', 'Club Brugge', 'Dender', 'Eupen', 'Genk', 'Gent',
+       'Kortrijk', 'Mechelen', 'Mouscron', 'Oostende',
+       'Oud-Heverlee Leuven', 'RWD Molenbeek', 'Seraing', 'St Truiden',
+       'St. Gilloise', 'Standard', 'Waasland-Beveren', 'Waregem',
+       'Westerlo')
+
 
 club_mapping = {'Anderlecht': 0,
  'Antwerp': 1,
@@ -380,6 +387,40 @@ def generateWinLosePieChart(homeClub, awayClub):
 
 
 
+def GetClubWinningRate(Encoded_club,side):
+    side = 'HomeTeamEnc' if side == 'Home' else 'AwayTeamEnc'
+
+    dataFrame = dfNumeric[(dfNumeric[side] == Encoded_club)][['Home Full-T Goals','Away Full-T Goals','Full Result_enc','HomeTeamEnc','AwayTeamEnc']]
+    if side == 'HomeTeamEnc':
+        Full_Result_enc	= 0
+    elif side == 'AwayTeamEnc':
+        Full_Result_enc	= 1
+    
+    return round(len(dataFrame[dataFrame['Full Result_enc']==Full_Result_enc])/len(dataFrame),2)
+
+
+
+def GetImagePathClub(Encoded_club,side):
+    winingRate= GetClubWinningRate(Encoded_club,side)
+
+    if winingRate < 0.2 : 
+        st.write(f"my winning rate at {side} is",winingRate)
+        return '../assets/img/1.png'
+    elif winingRate >= 0.2 and winingRate < 0.3   :
+        st.write(f"my winning rate at {side} is ",winingRate)
+        return '../assets/img/2.jpg'
+    elif winingRate >= 0.3 and winingRate < 0.4   :
+        st.write(f"my winning rate at {side} is ",winingRate)
+        return '../assets/img/3.png'
+    elif winingRate >= 0.4 and winingRate < 0.5   :
+        st.write(f"my winning rate at {side} is ",winingRate)
+        return '../assets/img/4.jpg'
+    else:
+        st.write(f"my winning rate at {side} is ",winingRate)
+        return '../assets/img/5.jpg'
+
+
+
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
 #here
@@ -391,32 +432,58 @@ st.markdown("""
     .stApp {
         background-color: black;
     }
+    .st-emotion-cache-1dp5vir {
+            visibility : hidden
+        }
 
+    header {
+           background-color: green !important; 
+            }
+
+            
     h1{
-        color: white !important        
+        color: green !important        
     }
     .st-emotion-cache-ue6h4q{
-            color : white !important
+            color : green !important
+    }
+    .st-emotion-cache-uzeiqp p{
+        color : green !important        
     }
     </style>
         
     """, unsafe_allow_html=True)
+
+
+
+st.image('../assets/img/pepe.png')
 st.title('Football Match Goal Prediction')
+# Home team selection
+
 col1, col2 = st.columns(2)
 
-# Dropdown menus for selecting club and side
+# Selectbox with the placeholder as the default value
+
+# Only show the image if a valid club is selected (not the placeholder)
+
 with col1:
-    home_club = st.selectbox('Select Home Club', clubs)
-
-
-with col2:
-    away_club = st.selectbox('Select Away Club', clubs)
-
-# Predict Button
-if st.button('Predict Goals'):
-    # Execute the prediction process
+    home_club = st.selectbox('Select Home Club', clubs_selectBox)
     encoded_Hometeam_value = GetClubEncodedValue(home_club)
+    if home_club != 'Select a club...' : 
+        st.image(GetImagePathClub(encoded_Hometeam_value,'Home'), caption=f"You selected: {home_club}")
+    # Away club selection
+with col2:
+    away_club = st.selectbox('Select Away Club', clubs_selectBox)
     encoded_Awayteam_value = GetClubEncodedValue(away_club)
+    if away_club != 'Select a club...' : 
+        st.image(GetImagePathClub(encoded_Awayteam_value,'Away'),  caption=f"You selected: {away_club}")
+
+
+
+# Show predictions and charts
+if st.button("Play"):
+    # Execute the prediction process
+  
     averagesHome = calculate_mean_columns(encoded_Hometeam_value, 'Home')
     averagesAway = calculate_mean_columns(encoded_Awayteam_value, 'Away')
 
@@ -439,10 +506,9 @@ if st.button('Predict Goals'):
     predicted_Awaygoals_rounded = round(predictedAway_goals[0])
     
     # Display prediction result
-    st.write(f"Predicted Goals for {home_club} ('Home'): {predicted_Homegoals_rounded}")
-    st.write(f"Predicted Goals for {away_club} ('Away'): {predicted_Awaygoals_rounded}")
-    st.write(f"Mean Absolute Error {homeMae}")
-    st.write(f"Mean Absolute Error {awayMae}")
+    st.write(f" {home_club} ('Home'): {predicted_Homegoals_rounded}")
+    st.write(f" {away_club} ('Away'): {predicted_Awaygoals_rounded}")
+
     generateRadarChart(encoded_Hometeam_value)
     generateRadarChart(encoded_Awayteam_value)
     GenerateTotalGoalsTeamsBarChart(encoded_Hometeam_value,encoded_Awayteam_value)
