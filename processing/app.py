@@ -215,44 +215,48 @@ def create_feature_vector(averages, manual_averages, encoded_team_value, side):
 
 #---------------------charts---------------------------------------
 
-def ClubAwayHomediStat(clubName)->dict :
+def ClubAwayHomediStat(clubNumb)->dict :
+
+
     #172 matchs, Away  = 87(31 win,22 draw,34lose) , Home 85(39win,lose 26,draw 20)
     #HOME--------------------------------------------------------------------------------
-    Df_total_home_club_matches =  dfNumeric[dfNumeric['HomeTeamEnc']== clubName]
+    Df_total_home_club_matches =  dfNumeric[dfNumeric['HomeTeamEnc']== clubNumb]
     total_home_club_matches = len(Df_total_home_club_matches)
     #home_win
-    Df_Home_win_club_matches =  dfNumeric[(dfNumeric['HomeTeamEnc']== clubName)&((dfNumeric['Full Result_enc']== 0))]
+    Df_Home_win_club_matches =  dfNumeric[(dfNumeric['HomeTeamEnc']== clubNumb)&((dfNumeric['Full Result_enc']== 0))]
     home_win_club_matches_count= len(Df_Home_win_club_matches)
     #home_lost
-    Df_Home_lost_club_matches =  dfNumeric[(dfNumeric['HomeTeamEnc']== clubName)&((dfNumeric['Full Result_enc']== 1))]
+    Df_Home_lost_club_matches =  dfNumeric[(dfNumeric['HomeTeamEnc']== clubNumb)&((dfNumeric['Full Result_enc']== 1))]
     home_lost_club_matches_count= len(Df_Home_lost_club_matches)
     #home_draw
-    Df_Home_draw_club_matches =  dfNumeric[(dfNumeric['HomeTeamEnc']== clubName)&((dfNumeric['Full Result_enc']== 2))]
+    Df_Home_draw_club_matches =  dfNumeric[(dfNumeric['HomeTeamEnc']== clubNumb)&((dfNumeric['Full Result_enc']== 2))]
     home_draw_club_matches_count= len(Df_Home_draw_club_matches)
 
     #Away--------------------------------------------------------------------------------
 
-    Df_total_away_club_matches =  dfNumeric[dfNumeric['AwayTeamEnc']== clubName]
+    Df_total_away_club_matches =  dfNumeric[dfNumeric['AwayTeamEnc']== clubNumb]
     total_away_club_matches = len(Df_total_away_club_matches)
     #home_win
-    Df_away_win_club_matches =  dfNumeric[(dfNumeric['AwayTeamEnc']== clubName)&((dfNumeric['Full Result_enc']== 1))]
+    Df_away_win_club_matches =  dfNumeric[(dfNumeric['AwayTeamEnc']== clubNumb)&((dfNumeric['Full Result_enc']== 1))]
     away_win_club_matches_count= len(Df_away_win_club_matches)
     #home_lost
-    Df_away_lost_club_matches =  dfNumeric[(dfNumeric['AwayTeamEnc']== clubName)&((dfNumeric['Full Result_enc']== 0))]
+    Df_away_lost_club_matches =  dfNumeric[(dfNumeric['AwayTeamEnc']== clubNumb)&((dfNumeric['Full Result_enc']== 0))]
     away_lost_club_matches_count= len(Df_away_lost_club_matches)
     #home_draw
-    Df_away_draw_club_matches =  dfNumeric[(dfNumeric['AwayTeamEnc']== clubName)&((dfNumeric['Full Result_enc']== 2))]
+    Df_away_draw_club_matches =  dfNumeric[(dfNumeric['AwayTeamEnc']== clubNumb)&((dfNumeric['Full Result_enc']== 2))]
     away_draw_club_matches_count= len(Df_away_draw_club_matches)
 
-    
-    wining_home_rate =  "{:.2f}".format(home_win_club_matches_count / total_home_club_matches)
-    wining_away_rate =  "{:.2f}".format(away_win_club_matches_count / total_away_club_matches)
 
-    losing_home_rate = "{:.2f}".format(home_lost_club_matches_count / total_home_club_matches)
-    losing_away_rate = "{:.2f}".format(away_lost_club_matches_count / total_away_club_matches)
+    print("total_home_club_matches",total_home_club_matches,"total_away_club_matches",total_away_club_matches)
 
-    draw_home_rate = "{:.2f}".format(home_draw_club_matches_count / total_home_club_matches)
-    draw_away_rate = "{:.2f}".format(away_draw_club_matches_count / total_away_club_matches)
+    wining_home_rate =  (home_win_club_matches_count / total_home_club_matches)
+    wining_away_rate =  (away_win_club_matches_count / total_away_club_matches)
+
+    losing_home_rate = (home_lost_club_matches_count / total_home_club_matches)
+    losing_away_rate = (away_lost_club_matches_count / total_away_club_matches)
+
+    draw_home_rate = (home_draw_club_matches_count / total_home_club_matches)
+    draw_away_rate = (away_draw_club_matches_count / total_away_club_matches)
 
     #Df_Home_win_club_matches[['HomeTeamEnc','AwayTeamEnc','Home Full-T Goals','Away Full-T Goals','Full Result_enc']]
 
@@ -265,9 +269,9 @@ def ClubAwayHomediStat(clubName)->dict :
         'draw_away_rate':draw_away_rate
     }
 
-def generateRadarChart(club) :
+def generateRadarChart(clubNumb) :
     # Split the keys and values
-    stats = ClubAwayHomediStat(club)
+    stats = ClubAwayHomediStat(clubNumb)
 
     labels = list(stats.keys())
     values = list(map(float, stats.values()))  # Convert string values to floats
@@ -280,7 +284,7 @@ def generateRadarChart(club) :
     angles += angles[:1]
 
     # Initialize the radar chart
-    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+    fig, ax = plt.subplots(figsize=(5, 3), subplot_kw=dict(polar=True))
 
     # Plot the radar chart
     ax.fill(angles, values, color='b', alpha=0.25)
@@ -289,10 +293,12 @@ def generateRadarChart(club) :
     # Add labels
     ax.set_yticklabels([])
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(labels)
+    ax.set_xticklabels(labels, fontsize=6)
 
     # Title and show the plot
-    ax.title('Club Performance Stats (Home vs. Away)')
+#    ax.title('Club Performance Stats (Home vs. Away)')
+    ax.set_title('Club Performance Stats (Home vs. Away)', fontsize=8)
+
     st.pyplot(fig)
 
 
@@ -313,19 +319,27 @@ def GenerateTotalGoalsTeamsBarChart(home_club,away_club):
     total_goals = [HomeTotalGoal, AwayTotalGoal]
 
     # Create the bar chart
-    plt.figure(figsize=(6, 4))
-    plt.bar(teams, total_goals, color=['green', 'red'])
 
+    fig, ax = plt.subplots(figsize=(4, 2))
+    ax.bar(teams, total_goals, color=['green', 'red'])
+
+    # Add title and labels
+    ax.set_title(f'Total Goals for Both Teams in the Last {N_matches} Matches')
+    ax.set_ylabel('Total Goals')
     # Add title and labels
     plt.title(f'Total both teams Goals of the last {N_matches} matches')
     plt.ylabel('Total Goals')
 
     # Show the chart
-    plt.show()
+    st.pyplot(fig)
 
     
-def generateWinLosePieChart(homeClub,AwayClub) : 
-    matchesBTTeams = dfNumeric[((dfNumeric['HomeTeamEnc'] ==home_club) | (dfNumeric['AwayTeamEnc'] ==home_club))&((dfNumeric['HomeTeamEnc'] ==away_club) | (dfNumeric['AwayTeamEnc'] ==away_club)) ] 
+def generateWinLosePieChart(homeClub, awayClub):
+    # Filter the dataframe for matches between the two clubs
+    matchesBTTeams = dfNumeric[
+        ((dfNumeric['HomeTeamEnc'] == homeClub) | (dfNumeric['AwayTeamEnc'] == homeClub)) &
+        ((dfNumeric['HomeTeamEnc'] == awayClub) | (dfNumeric['AwayTeamEnc'] == awayClub))
+    ]
 
     # Home winning
     homeTotalWinning = matchesBTTeams[matchesBTTeams['Full Result_enc'] == 0]
@@ -343,31 +357,60 @@ def generateWinLosePieChart(homeClub,AwayClub) :
     teams = ['Home Team Wins', 'Away Team Wins', 'Draws']
     total_wins = [N_match_Home_won, N_match_Away_won, N_draw_match]
 
-    # Create the pie chart
-    plt.figure(figsize=(6, 6))
-    plt.pie(total_wins, labels=teams, autopct='%1.1f%%', colors=['green', 'red', 'blue'], startangle=90)
+    # Check if any value is NaN or all values are zero
+    if np.isnan(total_wins).any():
+        st.error("Error: One or more values are NaN.")
+        return
+    if sum(total_wins) == 0:
+        st.error("Error: No matches found between the selected teams.")
+        return
 
+    # Create the pie chart
+    fig, ax = plt.subplots(figsize=(4, 2), dpi=500)
+    ax.pie(total_wins, labels=teams, autopct='%1.1f%%', colors=['green', 'red', 'blue'],textprops={'fontsize': 5}, startangle=90)
+    
     # Add title
-    plt.title(f'Win/Draw Distribution in Last {sum(total_wins)} Matches')
+    ax.set_title(f'Win/Draw Distribution in Last {sum(total_wins)} Matches',fontsize=5)
 
     # Equal aspect ratio ensures that pie is drawn as a circle.
-    plt.axis('equal')
+    ax.axis('equal')
 
-    # Show the chart
-    plt.show()
+    # Display chart in Streamlit
+    st.pyplot(fig)
 
 
 
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
-
+#here
 # Streamlit UI
+
+
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: black;
+    }
+
+    h1{
+        color: white !important        
+    }
+    .st-emotion-cache-ue6h4q{
+            color : white !important
+    }
+    </style>
+        
+    """, unsafe_allow_html=True)
 st.title('Football Match Goal Prediction')
+col1, col2 = st.columns(2)
 
 # Dropdown menus for selecting club and side
+with col1:
+    home_club = st.selectbox('Select Home Club', clubs)
 
-home_club = st.selectbox('Select Home Club', clubs)
-away_club = st.selectbox('Select Away Club', clubs)
+
+with col2:
+    away_club = st.selectbox('Select Away Club', clubs)
 
 # Predict Button
 if st.button('Predict Goals'):
@@ -400,5 +443,7 @@ if st.button('Predict Goals'):
     st.write(f"Predicted Goals for {away_club} ('Away'): {predicted_Awaygoals_rounded}")
     st.write(f"Mean Absolute Error {homeMae}")
     st.write(f"Mean Absolute Error {awayMae}")
-    generateRadarChart(home_club)
-    #generateRadarChart(away_club)
+    generateRadarChart(encoded_Hometeam_value)
+    generateRadarChart(encoded_Awayteam_value)
+    GenerateTotalGoalsTeamsBarChart(encoded_Hometeam_value,encoded_Awayteam_value)
+    generateWinLosePieChart(encoded_Awayteam_value,encoded_Hometeam_value) 
